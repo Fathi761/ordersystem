@@ -1,0 +1,40 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    background-color: rgb(64, 5, 108);
+    padding: 20px;
+}
+
+
+
+.card{
+    margin: 25px;
+    border-radius: 25px;
+    border: none;
+    display: -webkit-box;
+    background: rgb(64, 5, 108);
+}
+
+.card img{
+    border-radius: 15px;
+    width: 250px;
+    margin-left: 80px;
+    margin-top: 10px;
+}
+
+.card-body span{
+    font-weight: bold;
+    font-size: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(144, 42, 42);
+}
+
+.card-body p{
+    font-size: 20px;
+}

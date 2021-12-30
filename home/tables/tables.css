@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
+
+:root{
+    --red:#e84118;
+}
+
+.btn{
+    margin: 10px;
+}
+.heading{
+    text-align: center;
+    width: 90%;
+    margin:0 auto;
+    padding:0 .5rem;
+    padding-top: 6rem;
+    box-shadow: 0 .2rem .05rem rgba(0,0,0,.3);
+}
+
+.heading span{
+    display: inline-block;
+    font-size: 3.5rem;
+    color:var(--red);
+    padding:1rem 0;
+    box-shadow: 0 .2rem 0rem var(--red);
+}
+
+.tables{
+    min-height: 100vh;
+}
+
+.tables .controls{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding:2rem 0;
+    list-style: none;
+}
+
+.tables .controls .buttons{
+    margin:1rem 2rem;
+    padding:.5rem 0;
+    border-bottom:.2rem solid #333;
+    color:#333;
+    cursor: pointer;
+    font-size: 2rem;
+}
+
+.tables .controls .buttons.button-active,
+.tables .controls .buttons:hover{
+    color:var(--red);
+    border-color: var(--red);
+}
+
+.tables .image-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-bottom: 2rem;
+}
+
+.tables .image-container .image{
+    margin:2rem;
+}
+
+.tables .image-container .image img{
+    height: 20rem;
+    width: 100%;
+    object-fit: cover;
+}
+
+.tables .image-container .image a{
+    font-size: 25px;
+    padding:25px;
+    font-weight: 700;
+}
+
+.tables .image-container .image a:hover{
+    color:var(--red);
+    text-decoration: underline;
+}
