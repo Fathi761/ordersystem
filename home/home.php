@@ -51,10 +51,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
       <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link active" href="#booking"><i class="fas fa-mobile-alt mr-2"></i>Table Reservation</a>
+            <a class="nav-link active" href="./box/box.php"><i class="fas fa-mobile-alt mr-2"></i>BOX</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="./takeaway/takeaway.php"><i class="fas fa-mobile-alt mr-2"></i>Take away</a>
+            <a class="nav-link " href="#booking"><i class="fas fa-mobile-alt mr-2"></i>Table Reservation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="./takeaway/takeaway.php"><i class="fas fa-mobile-alt mr-2"></i>Take away</a>
           </li>
           <li class="nav-item">
             <a class="nav-link " href="./delivery/delivery.php"><i class="fas fa-mobile-alt mr-2"></i>Deleivery</a>
@@ -117,6 +120,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
                     $grand_total = 0;
                     $total = 0;
                     $curr = 15000;
+                    $allItems = '';
+                    $items = [];
                     while ($row = $result->fetch_assoc()):
                   ?>
                   <tr>
@@ -140,12 +145,19 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
                   
                     $grand_total += $row['total_price'];
                     $total = $grand_total * $curr;
+                    $items[] = $row['name'];
+                    $allItems = implode(', ', $items);
                   
                   ?>
                   <?php endwhile; ?>
+                  <form action="./check.php" method="post">
                   <tr>
                     <td colspan="2">
-                      
+                        <input type="hidden" name="products" value="<?= $allItems; ?>">
+                        <input type="hidden" name="grand_total" id="input" class="form-control" value="<?= number_format($grand_total,2); ?>">
+                        <input type="hidden" name="currency" id="input" class="form-control" value="<?= $total; ?>">
+                        <input type="hidden" name="table" id="input" class="form-control" value="home">
+
                     </td>
                     <td colspan="2"><b>Grand Total</b></td>
                     <td><b><i class="fas fa-dollar-sign"></i>&nbsp;&nbsp;<?= number_format($grand_total,2); ?></b></td>
@@ -157,11 +169,26 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
                     <td colspan="2">
                         </td>
                         <td colspan="2"><b>Total in L.L</b></td>
-                        <td><b><?= number_format($total,2); ?></b></td>
-                        <td><a href="checkout.php" class="btn btn-info <?= ($grand_total > 1) ? '' : 'disabled'; ?>"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Checkout</a>
-                        </td>
-                      
+                        <td><b><?= $total; ?></b></td>
+                        <td>
+                          <button type="submit" name="submit" class="btn btn-info <?= ($grand_total > 1) ? '' : 'disabled'; ?>" onclick="myFunction()"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Save order</button>
+                        </td> 
                   </tr>
+                  <tr>
+                        <td colspan="5">
+                        </td>
+                        <td>
+                          <a href="./print.php" type="button" name="submit" class="btn btn-success <?= ($grand_total > 1) ? '' : 'disabled'; ?>"><i class="fas fa-print"></i>&nbsp;&nbsp;Print order</a>
+
+                        </td>
+                      </tr>
+                      <script>
+                          function myFunction() {
+                              alert("Hello! Your order have been saved successfully. You can reset the bill now by clearing all items.");
+                              resetBill();
+                          }
+                      </script>
+                    </form> 
                 </tbody>
               </table>
           
@@ -705,7 +732,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
             <div class="box">
                 <h3 class="heading"> <span>Why choose us?</span> </h3>
                 <p>Techno plus POS is a software company offering high quality POS solutions for Restaurants and Retail business sector.
-Head office Shwayfat runway center next byblos bank</p>
+                    Head office Shwayfat runway center next byblos bank</p>
             </div>
     
             <div class="box">
@@ -905,90 +932,53 @@ Head office Shwayfat runway center next byblos bank</p>
   });
   </script>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    // Change the item quantity
+    $(".itemQty").on('change', function() {
+      var $el = $(this).closest('tr');
+
+      var pid = $el.find(".pid").val();
+      var pprice = $el.find(".pprice").val();
+      var quantity = $el.find(".itemQty").val();
+      location.reload(true);
+      $.ajax({
+        url: 'pay.php',
+        method: 'post',
+        cache: false,
+        data: {
+          quantity: quantity,
+          pid: pid,
+          pprice: pprice
+        },
+        success: function(response) {
+          console.log(response);
+        }
+      });
+    });
+
+    // Load total no.of items added in the cart and display in the navbar
+    load_cart_item_number();
+
+    function load_cart_item_number() {
+      $.ajax({
+        url: 'pay.php',
+        method: 'get',
+        data: {
+          cartItem: "cart_item"
+        },
+        success: function(response) {
+          $("#cart-item").html(response);
+        }
+      });
+    }
+  });
+  </script>
+
 
 
 <?php
-
-
-  if(isset($_POST['pcode'])){
-    $pid = $_POST['pid'];
-    $pimage = $_POST['pimage'];
-    $pname = $_POST['pname'];
-    $pprice = $_POST['pprice'];
-    $pcode = $_POST['pcode'];
-    $pquantity = $_POST['pquantity'];
-    $total_price = $pprice * $pquantity;
-
-    $stmt = $conn->prepare('SELECT product_code FROM cart WHERE product_code=?');
-    $stmt->bind_param('s',$pcode);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $r = $res->fetch_assoc();
-    $code = $r['product_code'] ?? '';
-
-    if (!$code) {
-	    $query = $conn->prepare('INSERT INTO cart (image,name,price,quantity,total_price,product_code) VALUES (?,?,?,?,?,?)');
-	    $query->bind_param('ssssss',$pimage,$pname,$pprice,$pquantity,$total_price,$pcode);
-	    $query->execute();
-
-	    echo '<div class="alert alert-success alert-dismissible mt-2">
-						  <button type="button" class="close" data-dismiss="alert">&times;</button>
-						  <strong>Item added to your cart!</strong>
-						</div>';
-	  } else {
-	    echo '<div class="alert alert-danger alert-dismissible mt-2">
-						  <button type="button" class="close" data-dismiss="alert">&times;</button>
-						  <strong>Item already added to your cart!</strong>
-						</div>';
-	  }
-}
-
-// Get no.of items available in the cart table
-if (isset($_GET['cartItem']) && isset($_GET['cartItem']) == 'cart_item') {
-    $stmt = $conn->prepare('SELECT * FROM cart');
-    $stmt->execute();
-    $stmt->store_result();
-    $rows = $stmt->num_rows;
-
-    echo $rows;
-}
-
-// Remove single items from cart
-if (isset($_GET['remove'])) {
-    $id = $_GET['remove'];
-
-    $stmt = $conn->prepare('DELETE FROM cart WHERE id=?');
-    $stmt->bind_param('i',$id);
-    $stmt->execute();
-
-    $_SESSION['showAlert'] = 'block';
-    $_SESSION['message'] = 'Item removed from the cart!';
-    header('location:home.php');
-}
-
-// Remove all items at once from cart
-if (isset($_GET['clear'])) {
-    $stmt = $conn->prepare('DELETE FROM cart');
-    $stmt->execute();
-    $_SESSION['showAlert'] = 'block';
-    $_SESSION['message'] = 'All Item removed from the cart!';
-    header('location:home.php');
-}
-// Set total price of the product in the cart table
-if (isset($_POST['quantity'])) {
-    $quantity = $_POST['quantity'];
-    $pid = $_POST['pid'];
-    $pprice = $_POST['pprice'];
-
-    $tprice = $quantity * $pprice;
-
-    $stmt = $conn->prepare('UPDATE cart SET quantity=?, total_price=? WHERE id=?');
-    $stmt->bind_param('isi',$quantity,$tprice,$pid);
-    $stmt->execute();
-}
-
-
-
 
 }else{
     header("Location: ../login/login.php");

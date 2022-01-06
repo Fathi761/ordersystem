@@ -35,7 +35,7 @@ body{
     flex-direction: row;
     background: var(--main-bg-color);
     color: var(--main-color);
-	position: fixed;
+	position: absolute;
 	height: 120px;
     top: 0;
     right: 0;
@@ -268,7 +268,7 @@ body{
 .sidebar {
 	width: 70px;
 	height: 100vh;
-	position: fixed;
+	position: absolute;
 	margin-top: 65px;
 	background: var(--light-background);
 	box-shadow: rgba(0,0,0,0.12) 0px 1px 4px 1px;

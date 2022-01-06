@@ -35,7 +35,7 @@ body{
     flex-direction: row;
     background: var(--main-bg-color);
     color: var(--main-color);
-	position: fixed;
+	position: absolute;
 	height: 120px;
     top: 0;
     right: 0;

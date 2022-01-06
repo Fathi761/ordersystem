@@ -149,7 +149,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
                         <td colspan="2">
                             <input type="hidden" name="products" value="<?= $allItems; ?>">
                             <input type="hidden" name="grand_total" id="input" class="form-control" value="<?= number_format($grand_total,2); ?>">
-                            <input type="hidden" name="currency" id="input" class="form-control" value="<?= number_format($total,2); ?>">
+                            <input type="hidden" name="currency" id="input" class="form-control" value="<?= $total; ?>">
                             <input type="hidden" name="table" id="input" class="form-control" value="takeaway">
 
                         </td>
@@ -160,15 +160,31 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
                       </tr>
 
                       <tr>
-                        <td colspan="2">
+                        <td colspan="1">
+                        </td>
+                        <td>
+                          <!-- <a href="./print.php" type="button" name="submit" class="btn btn-info <?= ($grand_total > 1) ? '' : 'disabled'; ?>"><i class="far fa-credit-card"></i>&nbsp;&nbsp;print</a> -->
                         </td>
                         <td colspan="2"><b>Total in L.L</b></td>
-                        <td><b><?= number_format($total,2); ?></b></td>
+                        <td><b><?= $total; ?></b></td>
                         <td>
                           <button type="button" name="submit" class="btn btn-info <?= ($grand_total > 1) ? '' : 'disabled'; ?>" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Save order</button>
                         </td>
                       </tr>
-                    
+                      <tr>
+                      <td colspan="1">
+                        </td>
+                        <td>
+                          <a href="./checkout.php" type="button" class="btn btn-warning <?= ($grand_total > 1) ? '' : 'disabled'; ?>"><i class="fas fa-credit-card"></i>&nbsp;&nbsp;Visa</a>
+
+                        </td>
+                        <td colspan="3">
+                        </td>
+                        <td>
+                          <a href="./print.php" type="button" class="btn btn-success <?= ($grand_total > 1) ? '' : 'disabled'; ?>"><i class="fas fa-print"></i>&nbsp;&nbsp;Print order</a>
+
+                        </td>
+                      </tr>
                 </tbody>
 
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -188,28 +204,24 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
                             </div>
                             <div class="form-group">
                               <label for="message-text" class="col-form-label" style="color: #000">Total L.L</label>
-                              <input type="text"  class="form-control" id="recipient-name" value="<?= number_format($total,2); ?>" disabled>
+                              <input type="text"  class="form-control" id="recipient-name" value="<?= $total; ?>" disabled>
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                               <label for="message-text" class="col-form-label" style="color: #000">Delivery Man</label>
                               <input type="text" name="man" class="form-control" id="recipient-name">
-                            </div>
+                            </div> -->
                             <div class="modal-footer">
                               <input type="hidden" name="usd" value="<?= number_format($grand_total,2); ?>">
-                              <input type="hidden" name="lira" value="<?= number_format($total,2); ?>">
+                              <input type="hidden" name="lira" value="<?= $total; ?>">
                               <input type="hidden" name="products" value="<?= $allItems; ?>">
                               <input type="hidden" name="grand_total" id="input" class="form-control" value="<?= number_format($grand_total,2); ?>">
-                              <input type="hidden" name="currency" id="input" class="form-control" value="<?= number_format($total,2); ?>">
-                              <input type="hidden" name="table" id="input" class="form-control" value="takeaway">
+                              <input type="hidden" name="currency" id="input" class="form-control" value="<?= $total; ?>">
+                              <input type="hidden" name="table" id="input" class="form-control" value="delivery">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                               <button type="submit" name="save" class="btn btn-primary">Save Order</button>
                             </div>
                           </form>
                         </div>
-                        <!-- <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" name="save" class="btn btn-primary">Send message</button>
-                        </div> -->
                       </div>
                     </div>
                   </div>
@@ -862,11 +874,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
 
 
 <?php
-
-
-
-
-
 }else{
     header("Location: ../login/login.php");
     exit();

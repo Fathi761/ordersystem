@@ -11,8 +11,7 @@
     text-align: center;
     width: 90%;
     margin:0 auto;
-    padding:0 .5rem;
-    padding-top: 6rem;
+    
     box-shadow: 0 .2rem .05rem rgba(0,0,0,.3);
 }
 
@@ -35,6 +34,7 @@
     flex-wrap: wrap;
     padding:2rem 0;
     list-style: none;
+    font-weight: 700;
 }
 
 .tables .controls .buttons{

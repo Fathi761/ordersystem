@@ -58,11 +58,27 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
 				</a>
 			</li>
 			<li class="sidebar-nav-item">
+				<a href="../box/box.php" class="sidebar-nav-link ">
+					<div>
+                        <i class="fas fa-box"></i>
+					</div>
+					<span>BOX</span>
+				</a>
+			</li>
+			<li class="sidebar-nav-item">
 				<a href="../users/user.php" class="sidebar-nav-link ">
 					<div>
                         <i class="fas fa-users"></i>
 					</div>
 					<span>Users</span>
+				</a>
+			</li>
+			<li class="sidebar-nav-item">
+				<a href="../visa/visa.php" class="sidebar-nav-link">
+					<div>
+                        <i class="fas fa-credit-card"></i>
+					</div>
+					<span>VISA</span>
 				</a>
 			</li>
 			<li class="sidebar-nav-item">

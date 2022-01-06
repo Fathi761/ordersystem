@@ -148,7 +148,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
                             <td colspan="2">
                                 <input type="hidden" name="products" value="<?= $allItems; ?>">
                                 <input type="hidden" name="grand_total" id="input" class="form-control" value="<?= number_format($grand_total,2); ?>">
-                                <input type="hidden" name="currency" id="input" class="form-control" value="<?= number_format($total,2); ?>">
+                                <input type="hidden" name="currency" id="input" class="form-control" value="<?= $total; ?>">
                                 <input type="hidden" name="table" id="input" class="form-control" value="table1">
 
                             
@@ -163,10 +163,19 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
                             <td colspan="2">
                                 </td>
                                 <td colspan="2"><b>Total in L.L</b></td>
-                                <td><b><?= number_format($total,2); ?></b></td>
+                                <td><b><?= $total; ?></b></td>
                                 <td><button type="submit" name="submit" class="btn btn-info <?= ($grand_total > 1) ? '' : 'disabled'; ?>" onclick="myFunction()"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Save order</button>
                                 </td>
                         </tr>
+                        <tr>
+                          <td colspan="5">
+                          </td>
+                          <td>
+                            <a href="./print.php" type="button" name="submit" class="btn btn-success <?= ($grand_total > 1) ? '' : 'disabled'; ?>"><i class="fas fa-print"></i>&nbsp;&nbsp;Print order</a>
+
+                          </td>
+                        </tr>
+
 
                         <script>
                             function myFunction() {
@@ -771,6 +780,50 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
   });
 
 </script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    // Change the item quantity
+    $(".itemQty").on('change', function() {
+      var $el = $(this).closest('tr');
+
+      var pid = $el.find(".pid").val();
+      var pprice = $el.find(".pprice").val();
+      var quantity = $el.find(".itemQty").val();
+      location.reload(true);
+      $.ajax({
+        url: 'pay.php',
+        method: 'post',
+        cache: false,
+        data: {
+          quantity: quantity,
+          pid: pid,
+          pprice: pprice
+        },
+        success: function(response) {
+          console.log(response);
+        }
+      });
+    });
+
+    // Load total no.of items added in the cart and display in the navbar
+    load_cart_item_number();
+
+    function load_cart_item_number() {
+      $.ajax({
+        url: 'pay.php',
+        method: 'get',
+        data: {
+          cartItem: "cart_item"
+        },
+        success: function(response) {
+          $("#cart-item").html(response);
+        }
+      });
+    }
+  });
+  </script>
 
 <?php
 }else{

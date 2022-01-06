@@ -150,7 +150,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
                         <td colspan="2">
                             <input type="hidden" name="products" value="<?= $allItems; ?>">
                             <input type="hidden" name="grand_total" id="input" class="form-control" value="<?= number_format($grand_total,2); ?>">
-                            <input type="hidden" name="currency" id="input" class="form-control" value="<?= number_format($total,2); ?>">
+                            <input type="hidden" name="currency" id="input" class="form-control" value="<?= $total; ?>">
                             <input type="hidden" name="table" id="input" class="form-control" value="takeaway">
 
                         </td>
@@ -164,20 +164,26 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])){
                         <td colspan="2">
                         </td>
                         <td colspan="2"><b>Total in L.L</b></td>
-                        <td><b><?= number_format($total,2); ?></b></td>
+                        <td><b><?= $total; ?></b></td>
                         <td>
                           <button type="submit" name="submit" class="btn btn-info <?= ($grand_total > 1) ? '' : 'disabled'; ?>" onclick="myFunction()"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Save order</button>
                         </td>
                       </tr>
+                      <tr>
+                        <td colspan="5">
+                        </td>
+                        <td>
+                          <a href="./print.php" type="button" name="submit" class="btn btn-success <?= ($grand_total > 1) ? '' : 'disabled'; ?>"><i class="fas fa-print"></i>&nbsp;&nbsp;Print order</a>
+
+                        </td>
+                      </tr> 
 
                       <script>
                           function myFunction() {
                               alert("Hello! Your order have been saved successfully. You can reset the bill now by clearing all items.");
                               resetBill();
                           }
-                          function resetBill(){
-                              $allItems = '';
-                          }
+
                       </script>
                     </form>
                 </tbody>

@@ -38,7 +38,7 @@ if(isset($_POST['pcode'])){
 
 // Get no.of items available in the cart table
 if (isset($_GET['cartItem']) && isset($_GET['cartItem']) == 'cart_item') {
-    $stmt = $conn->prepare('SELECT * FROM cart');
+    $stmt = $conn->prepare('SELECT * FROM cart3');
     $stmt->execute();
     $stmt->store_result();
     $rows = $stmt->num_rows;
